@@ -22,5 +22,5 @@ func ScanPort(target string) {
 }
 
 func main() {
-	ScanPort("fulva.in")
+
 }
