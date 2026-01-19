@@ -1,14 +1,13 @@
 package main
 
 import (
-	"fmt"
+	"net"
 	"strconv"
 )
 
 func ScanPort(target string) {
-	for port := 1; port <= 10; port++ {
-		// protocol := "tcp"
-		fmt.Println(strconv.Itoa(port))
+	for port := 1; port <= 1024; port++ {
+		conn, err := net.Dial("tcp", target+":"+strconv.Itoa(port))
 	}
 }
 
