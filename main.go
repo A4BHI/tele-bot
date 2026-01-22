@@ -31,7 +31,7 @@ func ScanRestOfThePorts(target string, ports []string, wg *sync.WaitGroup) {
 		address := target + ":" + ports
 		conn, err := net.DialTimeout("tcp", address, 500*time.Millisecond)
 		if err != nil {
-			return
+			continue
 		}
 		fmt.Println("Open Port: ", ports)
 		conn.Close()
@@ -47,16 +47,16 @@ func main() {
 	// var ports []string
 	ports := []string{"8080", "3389", "1443", "3306", "3389", "5900"}
 
-	var wg1, wg2 sync.WaitGroup
+	var wg sync.WaitGroup
 	for port := 1; port <= 1024; port++ {
-		wg1.Add(1)
-		go ScanPort(in, port, &wg1)
+		wg.Add(1)
+		go ScanPort(in, port, &wg)
 
-		wg2.Add(1)
-		go ScanRestOfThePorts(in, ports, &wg2)
 		continue
 
 	}
-	wg1.Wait()
-	wg2.Wait()
+	wg.Add(1)
+	go ScanRestOfThePorts(in, ports, &wg)
+	wg.Wait()
+
 }
