@@ -25,7 +25,8 @@ func ScanPort(target string, port int, wg *sync.WaitGroup) {
 
 }
 
-func ScanRestOfThePorts(target string, ports []string) {
+func ScanRestOfThePorts(target string, ports []string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	for _, ports := range ports {
 
 	}
@@ -37,11 +38,15 @@ func main() {
 	s.Scan()
 
 	in := s.Text()
+	// var ports []string
+	ports := []string{"8080", "3389", "1443", "3306", "3389", "5900"}
 
 	var wg sync.WaitGroup
 	for port := 1; port <= 1024; port++ {
 		wg.Add(1)
 		go ScanPort(in, port, &wg)
+		wg.Add(1)
+		go ScanRestOfThePorts(in, ports, &wg)
 
 		continue
 
