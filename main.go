@@ -29,7 +29,7 @@ func ScanRestOfThePorts(target string, ports []string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for _, ports := range ports {
 		address := target + ":" + ports
-		conn, err := net.DialTimeout("tcp", address, 500*time.Millisecond)
+		conn, err := net.DialTimeout("tcp", address, 1000*time.Millisecond)
 		if err != nil {
 			continue
 		}
