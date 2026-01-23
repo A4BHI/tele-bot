@@ -48,7 +48,13 @@ func main() {
 				reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "Please provide domain or ip adress of the target")
 				reply.ReplyToMessageID = updates.Message.MessageID
 				tgbot.Send(reply)
+				break
 			}
+
+			reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "Scanning please wait for a moment.")
+			reply.ReplyToMessageID = updates.Message.MessageID
+			tgbot.Send(reply)
+
 		}
 
 	}
