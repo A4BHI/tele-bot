@@ -16,6 +16,17 @@ func main() {
 		log.Fatal("error: ", err)
 	}
 
+	cmds := []tgbotapi.BotCommand{}
+	cmds = append(cmds, tgbotapi.BotCommand{Command: "port_scanner", Description: "Enter Domain or IP adress to scan ports"},
+		tgbotapi.BotCommand{Command: "ping", Description: "You can check if the bot is alive"})
+
+	config := tgbotapi.NewSetMyCommands(cmds...)
+
+	_, err = tgbot.Request(config)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	up := tgbotapi.NewUpdate(0)
 
 	updates := tgbot.GetUpdatesChan(up)
@@ -24,17 +35,22 @@ func main() {
 			continue
 		}
 
-		fmt.Println(updates.Message.Chat.UserName + ":" + updates.Message.Text)
-	}
-	cmds := []tgbotapi.BotCommand{}
-	cmds = append(cmds, tgbotapi.BotCommand{Command: "port-scanner", Description: "Enter Domain or IP adress to scan ports"},
-		tgbotapi.BotCommand{Command: "ping", Description: "You can check if the bot is alive"})
+		if !updates.Message.IsCommand() {
+			fmt.Println(updates.Message.Chat.UserName + ":" + updates.Message.Text)
+			continue
+		}
 
-	config := tgbotapi.NewSetMyCommands(cmds...)
+		switch updates.Message.Command() {
+		case "port_scanner":
+			arg := updates.Message.CommandArguments()
 
-	_, err = tgbot.Request(config)
-	if err != nil {
-		log.Fatal(err)
+			if len(arg) < 1 {
+				reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "Please provide domain or ip adress of the target")
+				reply.ReplyToMessageID = updates.Message.MessageID
+				tgbot.Send(reply)
+			}
+		}
+
 	}
 
 }
