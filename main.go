@@ -19,10 +19,12 @@ func main() {
 	up := tgbotapi.NewUpdate(0)
 	up.Timeout = 60
 
-	updates, err := tgbot.GetUpdates(up)
-	for _, update := range updates {
-		if update.Message != nil {
-			fmt.Println(update.Message.Text)
+	updates := tgbot.GetUpdatesChan(up)
+	for updates := range updates {
+		if updates.Message == nil {
+			continue
 		}
+
+		fmt.Println(updates.Message.Chat.UserName + ":" + updates.Message.Text)
 	}
 }
