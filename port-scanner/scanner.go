@@ -14,11 +14,12 @@ func ScanPort(target string, updates *tgbotapi.Update, tgbot tgbotapi.BotAPI) {
 	var wg sync.WaitGroup
 	var OpenPorts []string
 	for port := 1; port <= 1024; port++ {
-
+		p := port
+		wg.Add(1)
 		go func() {
-			wg.Add(1)
+
 			defer wg.Done()
-			conn, err := net.DialTimeout("tcp", target+":"+strconv.Itoa(port), 500*time.Millisecond)
+			conn, err := net.DialTimeout("tcp", target+":"+strconv.Itoa(p), 1000*time.Millisecond)
 			if err != nil {
 				fmt.Println(err)
 				return
@@ -31,8 +32,9 @@ func ScanPort(target string, updates *tgbotapi.Update, tgbot tgbotapi.BotAPI) {
 	}
 
 	extraPorts := []string{"8080", "3389", "1443", "3306", "3389", "5900"}
+	wg.Add(1)
 	go func() {
-		wg.Add(1)
+
 		defer wg.Done()
 		for _, ports := range extraPorts {
 			address := target + ":" + ports
