@@ -8,18 +8,21 @@ import (
 	"time"
 )
 
-func ScanPort(target string, port int, wg *sync.WaitGroup) {
-	defer wg.Done()
-	address := target + ":" + strconv.Itoa(port)
+func ScanPort(target string) {
 
-	conn, err := net.DialTimeout("tcp", address, 500*time.Millisecond)
-	if err != nil {
+	for port := 1; port <= 1024; port++ {
 
-		return
+		go func() {
+			conn, err := net.DialTimeout("tcp", target+":"+strconv.Itoa(port), 500*time.Millisecond)
+			if err != nil {
+
+				return
+			}
+			fmt.Println("Open port:", port)
+			conn.Close()
+		}()
+
 	}
-
-	fmt.Println("Open port:", port)
-	conn.Close()
 
 }
 
