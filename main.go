@@ -1,6 +1,7 @@
 package main
 
 import (
+	portscanner "bot/port-scanner"
 	"fmt"
 	"log"
 	"os"
@@ -59,6 +60,8 @@ func main() {
 			reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "Scanning please wait for a moment.")
 			reply.ReplyToMessageID = updates.Message.MessageID
 			tgbot.Send(reply)
+
+			portscanner.ScanPort(arg, &updates)
 
 		}
 
