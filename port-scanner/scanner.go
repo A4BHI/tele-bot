@@ -6,10 +6,12 @@ import (
 	"strconv"
 	"sync"
 	"time"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-func ScanPort(target string) {
-
+func ScanPort(target string, updates *tgbotapi.Update) {
+	var OpenPorts []string
 	for port := 1; port <= 1024; port++ {
 
 		go func() {
@@ -18,7 +20,8 @@ func ScanPort(target string) {
 
 				return
 			}
-			fmt.Println("Open port:", port)
+			OpenPorts = append(OpenPorts, strconv.Itoa(port))
+
 			conn.Close()
 		}()
 
