@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"unicode"
 )
 
 type service struct {
@@ -19,10 +20,33 @@ func Services() {
 	if err != nil {
 		fmt.Println(err)
 	}
-
+	var serviceName string
 	scanner := bufio.NewScanner(file)
+
 	for scanner.Scan() {
-		fmt.Println(scanner.Text())
+		line := scanner.Text()
+		if len(line) == 0 {
+			continue
+		}
+		if line[0] == '#' {
+			continue
+		}
+
+		for _, ch := range line {
+
+			if !unicode.IsSpace(ch) && !unicode.IsNumber(ch) {
+				serviceName += string(ch)
+			}
+
+			if unicode.IsSpace(ch) {
+				continue
+			}
+
+		}
+
+		fmt.Println(serviceName)
+		break
+
 	}
 
 	//fuvk
