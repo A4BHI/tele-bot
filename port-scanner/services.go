@@ -39,12 +39,13 @@ func Services() {
 		newline := strings.Split(line, "/")
 		for _, ch := range newline[0] {
 
-			if !unicode.IsDigit(ch) {
+			if !unicode.IsDigit(ch) && !unicode.IsSpace(ch) {
 				serviceName += string(ch)
 				continue
 			}
-
-			portno += string(ch)
+			if unicode.IsDigit(ch) {
+				portno += string(ch)
+			}
 
 		}
 
@@ -63,5 +64,5 @@ func GetServiceName(portno string) string {
 
 		}
 	}
-	return ""
+	return "unknown"
 }

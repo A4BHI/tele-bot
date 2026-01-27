@@ -50,7 +50,7 @@ func ScanPort(target string, updates *tgbotapi.Update, tgbot tgbotapi.BotAPI) {
 	}
 
 	wg.Wait()
-	stringBuilder := "\nOpen Port:"
+	stringBuilder := "\nOpen Port: "
 	var temp string
 	for _, port := range OpenPorts {
 		temp += stringBuilder + GetServiceName(port) + "/" + port
@@ -59,6 +59,5 @@ func ScanPort(target string, updates *tgbotapi.Update, tgbot tgbotapi.BotAPI) {
 	reply := tgbotapi.NewMessage(updates.Message.Chat.ID, temp)
 	reply.ReplyToMessageID = updates.Message.MessageID
 	tgbot.Send(reply)
-	fmt.Println(OpenPorts)
-	Services()
+	fmt.Println(temp)
 }
