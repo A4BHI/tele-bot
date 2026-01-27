@@ -48,6 +48,7 @@ func main() {
 
 		switch updates.Message.Command() {
 		case "port_scanner":
+			go portscanner.Services()
 			arg := updates.Message.CommandArguments()
 
 			if len(arg) < 1 {

@@ -4,15 +4,16 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 	"unicode"
 )
 
-type service struct {
+type Service struct {
 	service string
 	port    string
 }
 
-var slicesOfservice []service
+var SlicesOfservice []Service
 
 func Services() {
 
@@ -20,10 +21,13 @@ func Services() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	var serviceName string
+
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
+
+		var serviceName, portno string
+
 		line := scanner.Text()
 		if len(line) == 0 {
 			continue
@@ -32,22 +36,32 @@ func Services() {
 			continue
 		}
 
-		for _, ch := range line {
+		newline := strings.Split(line, "/")
+		for _, ch := range newline[0] {
 
-			if !unicode.IsSpace(ch) && !unicode.IsNumber(ch) {
+			if !unicode.IsDigit(ch) {
 				serviceName += string(ch)
-			}
-
-			if unicode.IsSpace(ch) {
 				continue
 			}
 
+			portno += string(ch)
+
 		}
 
-		fmt.Println(serviceName)
-		break
+		SlicesOfservice = append(SlicesOfservice, Service{service: serviceName, port: portno})
 
 	}
 
 	//fuvk
+
+}
+
+func GetServiceName(portno string) string {
+	for _, servicestruct := range SlicesOfservice {
+		if portno == servicestruct.port {
+			return servicestruct.service
+
+		}
+	}
+	return ""
 }
