@@ -21,6 +21,7 @@ func Services() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 
@@ -53,7 +54,7 @@ func Services() {
 
 	}
 
-	//fuvk
+	//changing the design
 
 }
 
