@@ -12,6 +12,10 @@ func (db *DB) LookUP(portno string) (serivcename string) {
 	return "unknown"
 }
 
+func LoadService(path string) (*DB, error) {
+
+}
+
 // var SlicesOfservice []Service
 
 // func Services() {
