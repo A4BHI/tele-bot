@@ -1,6 +1,7 @@
 package portscanner
 
 import (
+	"bufio"
 	"log"
 	"os"
 )
@@ -21,6 +22,11 @@ func LoadService(path string) (*DB, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines := scanner.Text()
 	}
 }
 
