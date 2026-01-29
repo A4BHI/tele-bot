@@ -1,69 +1,61 @@
 package portscanner
 
-import (
-	"bufio"
-	"fmt"
-	"os"
-	"strings"
-	"unicode"
-)
+// type Service struct {
+// 	service string
+// 	port    string
+// }
 
-type Service struct {
-	service string
-	port    string
-}
+// var SlicesOfservice []Service
 
-var SlicesOfservice []Service
+// func Services() {
 
-func Services() {
+// 	file, err := os.Open("/etc/services")
+// 	if err != nil {
+// 		fmt.Println(err)
+// 	}
+// 	defer file.Close()
 
-	file, err := os.Open("/etc/services")
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer file.Close()
+// 	scanner := bufio.NewScanner(file)
 
-	scanner := bufio.NewScanner(file)
+// 	for scanner.Scan() {
 
-	for scanner.Scan() {
+// 		var serviceName, portno string
 
-		var serviceName, portno string
+// 		line := scanner.Text()
+// 		if len(line) == 0 {
+// 			continue
+// 		}
+// 		if line[0] == '#' {
+// 			continue
+// 		}
 
-		line := scanner.Text()
-		if len(line) == 0 {
-			continue
-		}
-		if line[0] == '#' {
-			continue
-		}
+// 		newline := strings.Split(line, "/")
+// 		for _, ch := range newline[0] {
 
-		newline := strings.Split(line, "/")
-		for _, ch := range newline[0] {
+// 			if !unicode.IsDigit(ch) && !unicode.IsSpace(ch) {
+// 				serviceName += string(ch)
+// 				continue
+// 			}
+// 			if unicode.IsDigit(ch) {
+// 				portno += string(ch)
+// 			}
 
-			if !unicode.IsDigit(ch) && !unicode.IsSpace(ch) {
-				serviceName += string(ch)
-				continue
-			}
-			if unicode.IsDigit(ch) {
-				portno += string(ch)
-			}
+// 		}
 
-		}
+// 		SlicesOfservice = append(SlicesOfservice, Service{service: serviceName, port: portno})
 
-		SlicesOfservice = append(SlicesOfservice, Service{service: serviceName, port: portno})
+// 	}
 
-	}
+// 	//changing the design
 
-	//changing the design
+// }
 
-}
+// func GetServiceName(portno string) string {
+// 	for _, servicestruct := range SlicesOfservice {
+// 		if portno == servicestruct.port {
+// 			return servicestruct.service
 
-func GetServiceName(portno string) string {
-	for _, servicestruct := range SlicesOfservice {
-		if portno == servicestruct.port {
-			return servicestruct.service
-
-		}
-	}
-	return "unknown"
-}
+// 		}
+// 	}
+// 	return "unknown"
+// }
