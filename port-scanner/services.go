@@ -1,5 +1,10 @@
 package portscanner
 
+import (
+	"log"
+	"os"
+)
+
 type DB struct {
 	Port map[string]string
 }
@@ -13,7 +18,10 @@ func (db *DB) LookUP(portno string) (serivcename string) {
 }
 
 func LoadService(path string) (*DB, error) {
-
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // var SlicesOfservice []Service
