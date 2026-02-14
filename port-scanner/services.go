@@ -47,7 +47,9 @@ func LoadService(path string) (*DB, error) {
 		ports := strings.Split(field[1], "/")
 
 		// fmt.Println(field[0], field[1])
-
+		if ports[1] != "tcp" {
+			continue
+		}
 		db.Port[ports[0]] = ServicesAndProtocols{
 			NameOfService: field[0],
 			Protocol:      ports[1],
