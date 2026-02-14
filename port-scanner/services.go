@@ -7,18 +7,17 @@ import (
 	"strings"
 )
 
-
-type  ServicesAndProtocols struct{
-	Name string
-	Protocol string
+type ServicesAndProtocols struct {
+	NameOfService string
+	Protocol      string
 }
 type DB struct {
-	Port map[string]string
+	Port map[string]ServicesAndProtocols
 }
 
 func (db *DB) LookUP(portno string) (serivcename string) {
 	if name, ok := db.Port[portno]; ok {
-		return name
+		return name.NameOfService
 	}
 
 	return "unknown"
@@ -29,8 +28,10 @@ func LoadService(path string) (*DB, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	SandP := &ServicesAndProtocols{}
 	db := &DB{
-		Port: make(map[string]string),
+		Port: make(map[string]ServicesAndProtocols),
 	}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -44,11 +45,13 @@ func LoadService(path string) (*DB, error) {
 		}
 
 		field := strings.Fields(lines)
-		ports:= 
+		ports := strings.Split(field[1], "/")
+		SandP.NameOfService = field[0]
+		SandP.Protocol = ports[1]
 
 		// fmt.Println(field[0], field[1])
 
-		db.Port[field[0]] = field[1]
+		db.Port[field[0]] = *SandP
 
 	}
 
