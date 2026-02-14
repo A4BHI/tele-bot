@@ -60,5 +60,7 @@ func ScanPort(target string, updates *tgbotapi.Update, tgbot tgbotapi.BotAPI, db
 	reply := tgbotapi.NewMessage(updates.Message.Chat.ID, temp)
 	reply.ReplyToMessageID = updates.Message.MessageID
 	tgbot.Send(reply)
+	fmt.Println(">>")
 	fmt.Println(temp)
+	fmt.Println(">>")
 }

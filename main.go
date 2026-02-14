@@ -60,7 +60,10 @@ func main() {
 
 		switch updates.Message.Command() {
 		case "port_scanner":
-
+			if db == nil {
+				fmt.Println("db is nil now ")
+				db = <-ch
+			}
 			arg := updates.Message.CommandArguments()
 
 			if len(arg) < 1 {
@@ -79,7 +82,5 @@ func main() {
 		}
 
 	}
-
-	db = <-ch
 
 }

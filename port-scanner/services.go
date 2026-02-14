@@ -48,12 +48,14 @@ func LoadService(path string) (*DB, error) {
 
 		// fmt.Println(field[0], field[1])
 
-		db.Port[field[1]] = ServicesAndProtocols{
+		db.Port[ports[0]] = ServicesAndProtocols{
 			NameOfService: field[0],
 			Protocol:      ports[1],
 		}
 
 	}
+
+	// fmt.Println(db)
 
 	return db, err
 }
