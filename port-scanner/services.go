@@ -15,12 +15,12 @@ type DB struct {
 	Port map[string]ServicesAndProtocols
 }
 
-func (db *DB) LookUP(portno string) (serivcename string) {
+func (db *DB) LookUP(portno string) (serivcename string, protocol string) {
 	if name, ok := db.Port[portno]; ok {
-		return name.NameOfService
+		return name.NameOfService, name.Protocol
 	}
 
-	return "unknown"
+	return "unknown", "unknown"
 }
 
 func LoadService(path string) (*DB, error) {

@@ -11,6 +11,18 @@ import (
 )
 
 func main() {
+	var db *portscanner.DB
+	ch := make(chan *portscanner.DB)
+	go func() {
+		db, err := portscanner.LoadService("/etc/services")
+		if err != nil {
+			fmt.Println("Error loadingservices:", err)
+			return
+		}
+
+		ch <- db
+	}()
+
 	godotenv.Load()
 	tgbot, err := tgbotapi.NewBotAPI(os.Getenv("BOT_API"))
 	if err != nil {
@@ -48,7 +60,7 @@ func main() {
 
 		switch updates.Message.Command() {
 		case "port_scanner":
-			go db,_:= portscanner.Services()
+
 			arg := updates.Message.CommandArguments()
 
 			if len(arg) < 1 {
@@ -62,10 +74,12 @@ func main() {
 			reply.ReplyToMessageID = updates.Message.MessageID
 			tgbot.Send(reply)
 
-			portscanner.ScanPort(arg, &updates, *tgbot)
+			portscanner.ScanPort(arg, &updates, *tgbot, db)
 
 		}
 
 	}
+
+	db = <-ch
 
 }
