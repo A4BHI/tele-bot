@@ -11,17 +11,22 @@ import (
 )
 
 func main() {
-	var db *portscanner.DB
-	ch := make(chan *portscanner.DB)
-	go func() {
-		db, err := portscanner.LoadService("/etc/services")
-		if err != nil {
-			fmt.Println("Error loadingservices:", err)
-			return
-		}
+	// var db *portscanner.DB
+	// ch := make(chan *portscanner.DB)
+	// go func() {
+	// 	db, err := portscanner.LoadService("/etc/services")
+	// 	if err != nil {
+	// 		fmt.Println("Error loadingservices:", err)
+	// 		return
+	// 	}
 
-		ch <- db
-	}()
+	// 	ch <- db
+	// }() NOT NECESSARY IN HERE
+	db, err := portscanner.LoadService("/etc/services")
+	if err != nil {
+		fmt.Println("Error loadingservices:", err)
+		return
+	}
 
 	godotenv.Load()
 	tgbot, err := tgbotapi.NewBotAPI(os.Getenv("BOT_API"))
@@ -60,10 +65,10 @@ func main() {
 
 		switch updates.Message.Command() {
 		case "port_scanner":
-			if db == nil {
-				fmt.Println("db is nil now ")
-				db = <-ch
-			}
+			// if db == nil {
+			// 	fmt.Println("db is nil now ")
+			// 	db = <-ch
+			// }
 			arg := updates.Message.CommandArguments()
 
 			if len(arg) < 1 {
