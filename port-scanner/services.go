@@ -2,12 +2,16 @@ package portscanner
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"strings"
 )
 
+
+type  ServicesAndProtocols struct{
+	Name string
+	Protocol string
+}
 type DB struct {
 	Port map[string]string
 }
@@ -25,7 +29,9 @@ func LoadService(path string) (*DB, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	db := &DB{
+		Port: make(map[string]string),
+	}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 
@@ -38,13 +44,12 @@ func LoadService(path string) (*DB, error) {
 		}
 
 		field := strings.Fields(lines)
+		ports:= 
 
-		fmt.Println(field[0], field[1])
+		// fmt.Println(field[0], field[1])
 
-	}
+		db.Port[field[0]] = field[1]
 
-	db := &DB{
-		Port: make(map[string]string),
 	}
 
 	return db, err
