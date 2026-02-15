@@ -53,8 +53,8 @@ func ScanPort(target string, updates *tgbotapi.Update, tgbot tgbotapi.BotAPI, db
 	stringBuilder := "\nOpen Port: "
 	var temp string
 	for _, port := range OpenPorts {
-		name, protocol := db.LookUP(port)
-		temp += stringBuilder + name + " " + port + "/" + protocol
+		name := db.LookUP(port)
+		temp += stringBuilder + name + " " + port
 	}
 
 	reply := tgbotapi.NewMessage(updates.Message.Chat.ID, temp)
