@@ -1,6 +1,7 @@
 package main
 
 import (
+	file_sharing "bot/features/file-sharing"
 	portscanner "bot/features/port-scanner"
 	"fmt"
 	"log"
@@ -62,6 +63,13 @@ func main() {
 		if !updates.Message.IsCommand() {
 			switch {
 			case updates.Message.Document != nil:
+				fileid := updates.Message.Document.FileID
+				if !file_sharing.ValidateFile("document", fileid, &updates) {
+					reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "exe file extensions are not supported.")
+					reply.ReplyToMessageID = updates.Message.MessageID
+					tgbot.Send(reply)
+					return
+				}
 				reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "With or Without Password reply yes or no")
 				reply.ReplyToMessageID = updates.Message.MessageID
 				tgbot.Send(reply)
