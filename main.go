@@ -1,7 +1,7 @@
 package main
 
 import (
-	portscanner "bot/port-scanner"
+	portscanner "bot/features/port-scanner"
 	"fmt"
 	"log"
 	"os"
