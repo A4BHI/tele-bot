@@ -64,7 +64,7 @@ func main() {
 			switch {
 			case updates.Message.Document != nil:
 				fileid := updates.Message.Document.FileID
-				if !file_sharing.ValidateFile(fileid, &updates) {
+				if !file_sharing.ValidateFile(fileid, &updates, *tgbot) {
 					reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "exe file extensions are not supported.")
 					reply.ReplyToMessageID = updates.Message.MessageID
 					tgbot.Send(reply)
