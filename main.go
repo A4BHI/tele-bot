@@ -80,11 +80,22 @@ func main() {
 					tgbot.Send(reply)
 
 				} else if strings.ToLower(updates.Message.Text) == "no" {
-
-					reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "File Stored Without Password")
+					delete(userstate, updates.Message.Chat.ID)
+					reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "File Stored Without Password.")
+					reply.ReplyToMessageID = updates.Message.MessageID
+					tgbot.Send(reply)
+				} else {
+					reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "Reply with only yes or no.")
 					reply.ReplyToMessageID = updates.Message.MessageID
 					tgbot.Send(reply)
 				}
+				continue
+			}
+
+			if pendingUpload.State == "Waiting_For_Password" {
+				reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "file stored with the password : "+updates.Message.Text)
+				reply.ReplyToMessageID = updates.Message.MessageID
+				tgbot.Send(reply)
 			}
 		}
 
