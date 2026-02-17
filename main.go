@@ -93,6 +93,7 @@ func main() {
 			}
 
 			if pendingUpload.State == "Waiting_For_Password" {
+
 				reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "file stored with the password : "+updates.Message.Text)
 				reply.ReplyToMessageID = updates.Message.MessageID
 				tgbot.Send(reply)
