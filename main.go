@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/joho/godotenv"
@@ -69,7 +70,7 @@ func main() {
 
 		if pendingUpload, exist := userstate[updates.Message.Chat.ID]; exist {
 			if pendingUpload.State == "Awaiting_Response" {
-				if updates.Message.Text == "yes" {
+				if strings.ToLower(updates.Message.Text) == "yes" {
 					userstate[updates.Message.Chat.ID] = PendingUpload{
 						Fileid: pendingUpload.Fileid,
 						State:  "Waiting_For_Password",
@@ -78,6 +79,11 @@ func main() {
 					reply.ReplyToMessageID = updates.Message.MessageID
 					tgbot.Send(reply)
 
+				} else if strings.ToLower(updates.Message.Text) == "no" {
+
+					reply := tgbotapi.NewMessage(updates.Message.Chat.ID, "File Stored Without Password")
+					reply.ReplyToMessageID = updates.Message.MessageID
+					tgbot.Send(reply)
 				}
 			}
 		}
